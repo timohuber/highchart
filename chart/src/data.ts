@@ -1,6 +1,14 @@
-export const countrydData = [
+interface CountryDataInterface {
+    name: string;
+    data: number[];
+    color: string;
+    visible?: boolean;
+    filter?: boolean;
+}
+
+export const countrydData: CountryDataInterface[] = [
     {
-        name: "USA",
+        name: 'USA',
         data: [
             2,
             9,
@@ -76,12 +84,12 @@ export const countrydData = [
             4018,
             4000,
         ],
-        color: "#419bf9",
+        color: '#419bf9',
         filter: true,
         visible: true,
     },
     {
-        name: "Russia",
+        name: 'Russia',
         data: [
             0,
             0,
@@ -157,12 +165,12 @@ export const countrydData = [
             4490,
             4300,
         ],
-        color: "#ff5844",
+        color: '#ff5844',
         filter: true,
         visible: true,
     },
     {
-        name: "UK",
+        name: 'UK',
         data: [
             0,
             0,
@@ -238,11 +246,11 @@ export const countrydData = [
             215,
             215,
         ],
-        color: "#5758ac",
+        color: '#5758ac',
         visible: true,
     },
     {
-        name: "France",
+        name: 'France',
         data: [
             0,
             0,
@@ -318,11 +326,11 @@ export const countrydData = [
             300,
             300,
         ],
-        color: "#8c7abe",
+        color: '#8c7abe',
         visible: true,
     },
     {
-        name: "China",
+        name: 'China',
         data: [
             0,
             0,
@@ -398,11 +406,11 @@ export const countrydData = [
             260,
             270,
         ],
-        color: "#0099d2",
+        color: '#0099d2',
         visible: true,
     },
     {
-        name: "Israel",
+        name: 'Israel',
         data: [
             0,
             0,
@@ -478,11 +486,11 @@ export const countrydData = [
             80,
             80,
         ],
-        color: "#ffe231",
+        color: '#ffe231',
         visible: true,
     },
     {
-        name: "India",
+        name: 'India',
         data: [
             0,
             0,
@@ -558,11 +566,11 @@ export const countrydData = [
             120,
             130,
         ],
-        color: "#e4c488",
+        color: '#e4c488',
         visible: true,
     },
     {
-        name: "Pakistan",
+        name: 'Pakistan',
         data: [
             0,
             0,
@@ -638,11 +646,11 @@ export const countrydData = [
             130,
             140,
         ],
-        color: "#01aa45",
+        color: '#01aa45',
         visible: true,
     },
     {
-        name: "NorthKorea",
+        name: 'NorthKorea',
         data: [
             0,
             0,
@@ -718,19 +726,24 @@ export const countrydData = [
             0,
             0,
         ],
-        color: "#489681",
+        color: '#489681',
         visible: true,
     },
 ];
-export const testData = {
+
+interface EventInterface {
+    title: string;
+    text: string;
+}
+
+export const eventsData: { [year: number]: EventInterface } = {
     1962: {
-        title: "Crazy Happening",
+        title: 'Crazy Happening',
         text:
-            "Die Kubakrise (in Russland und im Sprachgebrauch der DDR auch als „Karibische Krise“, auf Kuba als „Oktoberkrise“ bezeichnet) im Oktober 1962 war eine Konfrontation zwischen den Vereinigten Staaten von Amerika und der UdSSR, die sich aus der Stationierung US-amerikanischer Mittelstreckenraketen vom Typ Jupiter auf einem NATO-Stützpunkt in der Türkei und die daraufhin beschlossene Stationierung sowjetischer Mittelstreckenraketen auf Kuba entwickelte. ",
+            'Die Kubakrise (in Russland und im Sprachgebrauch der DDR auch als „Karibische Krise“, auf Kuba als „Oktoberkrise“ bezeichnet) im Oktober 1962 war eine Konfrontation zwischen den Vereinigten Staaten von Amerika und der UdSSR, die sich aus der Stationierung US-amerikanischer Mittelstreckenraketen vom Typ Jupiter auf einem NATO-Stützpunkt in der Türkei und die daraufhin beschlossene Stationierung sowjetischer Mittelstreckenraketen auf Kuba entwickelte. ',
     },
     1974: {
-        title: "Crazy Happening 2",
-        text:
-            "asdfadsf",
+        title: 'Crazy Happening 2',
+        text: 'asdfadsf',
     },
 };

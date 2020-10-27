@@ -38,10 +38,29 @@
 }
 
 /* Chart */
-.common-tick {
+.tick-xAxis {
     width: 40px;
     text-align: center;
     transform: translateX(-50%);
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+
+.common-tick {
+    height: 40px;
+}
+
+.event-tick {
+    height: 80px;
+}
+
+
+.tick-xAxis .connector {
+    width: 1px;
+    background: black;
+    flex-grow: 1;
+    margin-bottom: 5px;
 }
 
 /* overflow of parent of labels on xAxis */
