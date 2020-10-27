@@ -1,109 +1,91 @@
-import React, { useState, MouseEvent, useRef, MutableRefObject } from "react";
-import "./App.css";
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import CommonTick from "./components/commonTick";
-import { countrydData } from "./data";
-import { options } from "./options";
-import { renderToString } from "react-dom/server";
+import React, { useState, MouseEvent, useRef, MutableRefObject } from 'react';
+import './App.css';
+import Highcharts, {
+    ExtremesObject,
+    Chart,
+} from 'highcharts';
+import HighchartsReact from 'highcharts-react-official';
+import XAxisTick from './components/xAxisTick';
+import { renderToString } from 'react-dom/server';
+import { eventsData } from './data';
+import { options } from './options';
 
 function App() {
-    const [data] = useState(countrydData);
-    const [startingYear] = useState(1945);
-    const [startingYearFiltered] = useState(1990);
-    const [filtered, setFiltered] = useState(false);
+    const [zoomActive, setZoomActive] = useState(false);
+    const [filterActive, setFilterActive] = useState(false);
 
-    const chartRef = useRef<MutableRefObject<Highcharts.Chart> | null>(null);
-    // const chartRef = useRef<HTMLDivElement>()
+    const chartRef = useRef<{ chart: Chart } | null>(null);
 
+    const [zoomedXAxisExtreme] = [1990];
+    const [zoomedYAxisExtreme] = useState(1200);
+    const axisExtremes = useRef<{
+        x: ExtremesObject;
+        y: ExtremesObject;
+    } | null>(null);
+
+    // complete chart options
     const [chartOptions] = useState({
         ...options,
-        series: data,
-        tooltip: {
-            ...options.tooltip,
-            formatter: function (this: any): string {
-                return `<strong>${this.x}</strong><br />
-            ${this.series.name}: ${this.y}<br />
-            Weltweit: ${getTotalByYear(this.x)}
-            `;
-            },
-        },
         xAxis: {
-            accessibility: {
-                rangeDescription: "Range: 2010 to 2017",
-            },
-            tickInterval: 1,
-            tickLength: 0,
+            ...options.xAxis,
             labels: {
-                useHTML: true,
-                autoRotation: 0,
-
-                formatterDoesNotWork: function (
-                    this: Highcharts.AxisLabelsFormatterContextObject<number>
-                ): any {
-                    if (this.pos % 10 != 0) {
-                        return null;
-                    } else {
-                        var tick: Highcharts.Tick = this.axis.ticks[this.pos];
-                        var chart = this.chart;
-                        var tooltip = chart.tooltip;
-
-                        if (tick) {
-                            // @ts-ignore
-                            tick.label.element.onclick = function () {
-                                console.log('test')
-                            };
-                        }
-                        return this.value;
-                    }
-                },
-
+                ...options.xAxis.labels,
                 formatter: function (
                     this: Highcharts.AxisLabelsFormatterContextObject<number>
-                ): React.ReactElement | null | string {
-                    if (this.pos % 10 != 0) {
+                ): null | string {
+
+                    if (this.pos % 10 !== 0 && !eventsData[this.pos]) {
                         return null;
                     } else {
-                        // return `
-                        // <div class="common-tick">
-                        //     ${this.pos}
-                        // </div>
-                        // `;
-                        return renderToString(<CommonTick year={this.pos} />);
+                        return renderToString(
+                            <XAxisTick
+                                year={this.pos}
+                                event={eventsData[this.pos]}
+                            />
+                        );
                     }
                 },
             },
         },
-
-        plotOptions: {
-            series: {
-                ...options.plotOptions.series,
-                pointStart: startingYear,
-            },
-        },
-        chart: {
-            events: {
-                load: function() {
-                    document.querySelectorAll('.common-tick').forEach( tick => {
-                        tick.addEventListener('click', function(){
-                            console.log('click')
-                        })
-                    })
-                }
-            }
-        }
     });
 
-    const getTotalByYear = (year: number) => {
-        let total = 0;
-        data.forEach((country, index) => {
-            total += data[index].data[year - startingYear];
-        });
-        return total;
+    const saveExtremes = (chart: Highcharts.Chart) => {
+        if (!axisExtremes.current) {
+            axisExtremes.current = {
+                x: chart.xAxis[0].getExtremes(),
+                y: chart.yAxis[0].getExtremes(),
+            };
+        }
     };
 
-    // TODO: Highcharts Interface???
-    interface countryInterface {
+    const resetExtremes = (chart: Highcharts.Chart) => {
+        const extremes = axisExtremes.current;
+        chart.xAxis[0].setExtremes(extremes?.x.min, extremes?.x.max);
+        chart.yAxis[0].setExtremes(extremes?.y.min, extremes?.y.max);
+    };
+
+    const onClickZoomHandler = (e: MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+
+        const chart: Chart = chartRef.current!.chart;
+
+        // Store max values of axis
+        saveExtremes(chart);
+
+        if (zoomActive) {
+            resetExtremes(chart);
+        } else {
+            chart.xAxis[0].setExtremes(
+                zoomedXAxisExtreme,
+                axisExtremes.current?.x.max
+            );
+            chart.yAxis[0].setExtremes(0, zoomedYAxisExtreme);
+        }
+        setZoomActive(!zoomActive);
+    };
+
+    // TODO: Highcharts Interface?
+    interface SeriesInterface {
         options: {
             filter: boolean;
         };
@@ -116,35 +98,24 @@ function App() {
         data: [];
     }
 
-    const sliceData = (data: []) => {
-        return data.slice(startingYearFiltered - startingYear);
-    };
-
-    const onClickHandler = (e: MouseEvent<HTMLElement>) => {
+    const onClickFilterHandler = (e: MouseEvent<HTMLElement>) => {
         e.preventDefault();
-        setFiltered(!filtered);
 
-        // @ts-ignore
-        const chart = chartRef.current.chart!;
-        console.log(chartRef);
+        const chart: Chart = chartRef.current!.chart;
 
-        // TODO: Fix this
-        Highcharts.each(chart.series, function (
-            country: countryInterface,
-            index: number
-        ) {
-            if (country.options.filter) {
-                !country.visible ? country.show() : country.hide();
+        // Store max values of axis
+        saveExtremes(chart);
+
+        if (filterActive) {
+            resetExtremes(chart);
+        } else {
+            chart.yAxis[0].setExtremes(0, zoomedYAxisExtreme);
+        }
+        setFilterActive(!filterActive);
+        Highcharts.each(chart.series, function (series: SeriesInterface) {
+            if (series.options.filter) {
+                !series.visible ? series.show() : series.hide();
             }
-
-            // country.update({
-            //   data: sliceData(country.data)
-            // })
-
-            // country.update({
-            //     x: country.xData.slice(startingYearFiltered - startingYear),
-            //     y: country.yData.slice(startingYearFiltered - startingYear),
-            // });
         });
     };
 
@@ -153,23 +124,18 @@ function App() {
             <HighchartsReact
                 highcharts={Highcharts}
                 options={chartOptions}
+                
+                // dont know how to fix this
+                // @ts-ignore
                 ref={chartRef}
+                key={'chart'}
             />
-            <button onClick={(e) => onClickHandler(e)}>Zoom</button>
+            <button onClick={(e) => onClickZoomHandler(e)}>Zoom</button>
+            <button onClick={(e) => onClickFilterHandler(e)}>
+                Die Kleinen
+            </button>
         </main>
     );
 }
 
 export default App;
-
-// const getFilteredData = () => {
-//   const range = startingYearFiltered - startingYear;
-//   const filtered = data.filter((country) => !country.filter);
-//   return filtered.map((country) => {
-//       return {
-//           ...country,
-//           data: country.data.slice(range),
-//       };
-//   });
-// };
-// const [filteredData] = useState(getFilteredData());
