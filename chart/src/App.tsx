@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent, useRef, MutableRefObject } from 'react';
+import React, { useState, MouseEvent, useRef } from 'react';
 import './App.css';
 import Highcharts, {
     ExtremesObject,
