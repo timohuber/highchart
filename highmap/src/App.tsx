@@ -6,10 +6,17 @@ import proj4 from 'proj4';
 import mapDataIE from '@highcharts/map-collection/custom/world-palestine-highres.geo.json';
 import { geojson, countries } from './data';
 
+import './App.css';
+
 highchartsMap(Highcharts);
 if (typeof window !== 'undefined') {
     window.proj4 = window.proj4 || proj4;
 }
+
+// https://www.highcharts.com/forum/viewtopic.php?t=41813
+// https://jsfiddle.net/BlackLabel/xhfrajd0/
+
+// resize plot area
 
 interface GeoDataInterface {
     keyword: string;
@@ -25,12 +32,32 @@ function App() {
     const [mapOptions] = useState({
         chart: {
             map: 'countries/ie/ie-all',
-            margin: [0, 0, 0, 0],
+            // margin: [0, 0, 0, 0],
             width: window.innerWidth,
+            height: 800,
+            plotBackgroundColor: '#E0E0E0',
+            // Inset??
+            // spacing: [100, 100, 150, 100],
         },
         title: {
             text: 'Map Demo',
         },
+        plotOptions: {},
+
+        // Inset??
+        // xAxis: [
+        //     {
+        //         // offset: 0,
+        //         // maxPadding: 1,
+        //     },
+        // ],
+        // yAxis: [
+        //     {
+        //         // offset: 0,
+        //         // maxPadding: 1,
+        //     },
+        // ],
+
         credits: {
             enabled: false,
         },
@@ -39,8 +66,11 @@ function App() {
         },
         tooltip: {
             headerFormat: '',
-            pointFormat: `<b>{point.freq}</b><br><b>{point.keyword}</b>
-                <br>lat: {point.lat}, lon: {point.lon}`,
+            shadow: false,
+            borderWidth: 0,
+            borderRadius: 0,
+            pointFormat: `<b>{point.keyword}</b>
+                <br />{point.text}`,
         },
         series: [
             {
@@ -48,8 +78,9 @@ function App() {
                 name: 'Basemap',
                 type: 'map',
                 mapData: mapDataIE,
-                borderColor: '#A0A0A0',
-                nullColor: 'rgba(200, 200, 200, 0.3)',
+                borderWidth: 1,
+                borderColor: '#88898b',
+                nullColor: '#88898b',
                 showInLegend: false,
             },
         ],
@@ -72,6 +103,12 @@ function App() {
     useEffect(() => {
         if (geoData) {
             const chart: Chart = chartRef.current!.chart;
+            // const xExtremes = chart.xAxis[0].getExtremes();
+            // const yExtremes = chart.yAxis[0].getExtremes();
+
+            // chart.xAxis[0].setExtremes(xExtremes.min, xExtremes.max);
+            // chart.yAxis[0].setExtremes(yExtremes.min * 1, yExtremes.max + 2000);
+
             countries.forEach((country) => {
                 const data = geoData.filter(
                     (obj: GeoDataInterface) => obj.countrycode === country.name
@@ -82,13 +119,47 @@ function App() {
                     // @ts-ignore
                     data: data,
                     cursor: 'pointer',
-                    color: country.color,
+                    // color: country.color,
+                    color: {
+                        radialGradient: { x1: 0, x2: 0, y1: 0, y2: 1 },
+                        stops: [
+                            [0, country.color],
+                            [0.3, country.color],
+                            [0.3, '#ffffff'],
+                            [0.7, '#ffffff'],
+                            [0.7, country.color],
+                            [1.0, country.color],
+                        ],
+                    },
+                    marker: {
+                        symbol: 'circle',
+                        radius: 10,
+                        shadow: 0,
+                    },
                 };
                 // @ts-ignore
                 chart.addSeries(newSerie);
             });
         }
     }, [geoData]);
+    const resize = () => {
+
+        // document.querySelector('.highcharts-container ').style.height(window.innerHeight);
+
+        document
+            .querySelectorAll(
+                '.highcharts-root, .highcharts-background, .highcharts-plot-background, .highcharts-plot-border'
+            )
+            .forEach((elm) => {
+                elm.setAttribute('height', `${window.innerHeight}px`);
+            });
+        document.querySelector('.highcharts-root')?.setAttribute('viewBox', `0 0 ${window.innerWidth} ${window.innerHeight}`)
+    };
+
+    const logChart = () => {
+        const chart: Chart = chartRef.current!.chart;
+        console.log(chart);
+    };
 
     return (
         <div className='App'>
@@ -98,7 +169,9 @@ function App() {
                 constructorType={'mapChart'}
                 highcharts={Highcharts}
                 options={mapOptions}
-            />
+            />{' '}
+            <button onClick={(e) => logChart()}>See chart</button>
+            <button onClick={(e) => resize()}>Resize</button>
         </div>
     );
 }

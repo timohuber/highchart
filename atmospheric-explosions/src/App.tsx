@@ -1,5 +1,4 @@
 import React, { useState, MutableRefObject, useRef } from 'react';
-import './App.css';
 import Highcharts, { Chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 import { refactoredData } from './data';
@@ -125,6 +124,30 @@ function App() {
                 // @ts-ignore
                 ref={chartRef}
                 key={'chart'}
+            />
+            <style
+                dangerouslySetInnerHTML={{
+                    __html: `
+                    /* Legend hover affects points and series */
+                    g.highcharts-series,
+                    .highcharts-point,
+                    .highcharts-markers,
+                    .highcharts-data-labels {
+                        opacity: 1 !important;
+                    }
+                    
+                    .highcharts-legend-series-active
+                        g.highcharts-series:not(.highcharts-series-hover),
+                    .highcharts-legend-point-active .highcharts-point:not(.highcharts-point-hover),
+                    .highcharts-legend-series-active
+                        .highcharts-markers:not(.highcharts-series-hover),
+                    .highcharts-legend-series-active
+                        .highcharts-data-labels:not(.highcharts-series-hover) {
+                        opacity: 1 !important;
+                    }
+                    
+                    `,
+                }}
             />
         </main>
     );

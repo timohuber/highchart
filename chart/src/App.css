@@ -1,40 +1,29 @@
-.App {
-    text-align: center;
+.embed-js-graphics-container,
+.tick-xAxis,
+span {
+    color: #505050;
+    font-size: 14px;
+    position: relative;
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+body,
+html {
+    margin: 0;
+    padding: 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #282c34;
-    min-height: 100vh;
+.embed-js-graphics-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    flex-direction: row;
 }
 
-.App-link {
-    color: #61dafb;
+.side-bar {
+    width: 15%;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+.embed-js-graphics-wrapper {
+    width: 85%;
+    position: relative;
 }
 
 /* Chart */
@@ -51,19 +40,146 @@
     height: 40px;
 }
 
-.event-tick {
-    height: 80px;
+.event-tick .tick-title {
+    width: 200px;
 }
 
+.toggle-event-icon {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin-bottom: 20px;
+    background-color: #ffe200;
+    box-shadow: 0 -2px 4px 0 rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #505050;
+    font-size: 18px;
+    cursor: pointer;
+}
 
 .tick-xAxis .connector {
     width: 1px;
-    background: black;
+    background: #939393;
     flex-grow: 1;
-    margin-bottom: 5px;
+    height: 50px;
 }
 
 /* overflow of parent of labels on xAxis */
 .highcharts-xaxis-labels > span {
     overflow: visible !important;
+}
+
+/* overlay */
+.toggle-zoom-overlay {
+    position: absolute;
+    background-color: rgba(204, 0, 0, 0.07);
+    border: 1px solid #fff;
+}
+
+.toggle-zoom-overlay:before {
+    content: '';
+    margin: 10px;
+    border: 1px solid #fff;
+    width: 30px;
+    height: 30px;
+    box-sizing: border-box;
+    display: block;
+}
+
+/* Modal */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    99% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0;
+        display: none;
+    }
+}
+
+.modal {
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: fadeIn 0.4s forwards;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+
+.modal.fade-out {
+    animation: fadeOut 0.4s forwards;
+}
+
+/* Sidebar */
+.side-bar {
+    border-right: solid 0.5px #505050;
+}
+
+.sidebar-header {
+    padding: 15px;
+}
+
+.sidebar-image {
+    width: 100%;
+    padding-top: 100%;
+    border: 2px solid #fcee21;
+    background-color: #b7c5c5;
+    position: relative;
+}
+
+.sidebar-image h3 {
+    position: absolute;
+    color: #000;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    background-color: #fcee21;
+    bottom: 10px;
+    left: 10px;
+    max-width: calc(100% - 20px);
+}
+
+.sidebar-tabs {
+    border-top: 1px dotted #505050;
+}
+
+.sidebar-tabs-content {
+    padding: 15px;
+}
+
+.sidebar-tabs-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.sidebar-tabs-header > a {
+    padding: 15px;
+    text-align: center;
+    width: 50%;
+    text-transform: uppercase;
+}
+
+.sidebar-tabs-header > a.passive {
+    background-color: #b7c5c540;
+    cursor: pointer;
 }

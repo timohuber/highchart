@@ -84,7 +84,7 @@ export const countrydData: CountryDataInterface[] = [
             4018,
             4000,
         ],
-        color: '#419bf9',
+        color: '#7fd1f2',
         filter: true,
         visible: true,
     },
@@ -165,7 +165,7 @@ export const countrydData: CountryDataInterface[] = [
             4490,
             4300,
         ],
-        color: '#ff5844',
+        color: '#7695a2',
         filter: true,
         visible: true,
     },
@@ -246,7 +246,7 @@ export const countrydData: CountryDataInterface[] = [
             215,
             215,
         ],
-        color: '#5758ac',
+        color: '#eebeae',
         visible: true,
     },
     {
@@ -326,7 +326,7 @@ export const countrydData: CountryDataInterface[] = [
             300,
             300,
         ],
-        color: '#8c7abe',
+        color: '#eedeac',
         visible: true,
     },
     {
@@ -406,7 +406,7 @@ export const countrydData: CountryDataInterface[] = [
             260,
             270,
         ],
-        color: '#0099d2',
+        color: '#05234b',
         visible: true,
     },
     {
@@ -486,7 +486,7 @@ export const countrydData: CountryDataInterface[] = [
             80,
             80,
         ],
-        color: '#ffe231',
+        color: '#d1effb',
         visible: true,
     },
     {
@@ -566,7 +566,7 @@ export const countrydData: CountryDataInterface[] = [
             120,
             130,
         ],
-        color: '#e4c488',
+        color: '#7695a2',
         visible: true,
     },
     {
@@ -646,7 +646,7 @@ export const countrydData: CountryDataInterface[] = [
             130,
             140,
         ],
-        color: '#01aa45',
+        color: '#437d88',
         visible: true,
     },
     {
@@ -726,24 +726,52 @@ export const countrydData: CountryDataInterface[] = [
             0,
             0,
         ],
-        color: '#489681',
+        color: '#ff0000',
         visible: true,
     },
 ];
 
-interface EventInterface {
+export interface EventInterface {
     title: string;
-    text: string;
+    year?: number;
+    text?: string;
 }
 
 export const eventsData: { [year: number]: EventInterface } = {
-    1962: {
-        title: 'Crazy Happening',
+    1945: {
+        title: 'Hiroshima und Nagasaki',
+        year: 1945,
         text:
-            'Die Kubakrise (in Russland und im Sprachgebrauch der DDR auch als „Karibische Krise“, auf Kuba als „Oktoberkrise“ bezeichnet) im Oktober 1962 war eine Konfrontation zwischen den Vereinigten Staaten von Amerika und der UdSSR, die sich aus der Stationierung US-amerikanischer Mittelstreckenraketen vom Typ Jupiter auf einem NATO-Stützpunkt in der Türkei und die daraufhin beschlossene Stationierung sowjetischer Mittelstreckenraketen auf Kuba entwickelte. ',
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     },
-    1974: {
-        title: 'Crazy Happening 2',
-        text: 'asdfadsf',
+    1962: {
+        title: 'Kubakrise',
+        year: 1962,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
+    1968: {
+        title: 'Atomwaffensperrvertrag',
+        year: 1968,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
+    1979: {
+        title: 'NATO-Doppelbeschluss',
+        year: 1979,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
+    1987: {
+        title: 'INF-Vertrag',
+        year: 1987,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
+    2001: {
+        title: '9 / 11',
+        year: 2001,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+    },
+    2018: {
+        title: 'Donald Trump',
+        year: 2018,
+        text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     },
 };

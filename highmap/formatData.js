@@ -1,12 +1,4 @@
-export interface TestSiteInterface {
-    type: number;
-    title: string;
-    countrycode: string;
-    location: [number, number];
-    text: string;
-}
-
-export const countries = [
+const countries = [
     { name: 'US', color: '#0099d2' },
     { name: 'USUK', color: '#ffe200' },
     { name: 'FR', color: '#8c7abe' },
@@ -18,7 +10,7 @@ export const countries = [
     { name: 'UK', color: '#5758ac' },
 ];
 
-export const geojson = [
+const geojson = [
     {
         type: 8,
         title: 'Amchitka Island, Alaska, USA',
@@ -479,7 +471,7 @@ export const geojson = [
     },
 ];
 
-const formattedJson: any = [];
+let formattedJson = [];
 
 geojson.forEach((c) => {
     formattedJson.push({

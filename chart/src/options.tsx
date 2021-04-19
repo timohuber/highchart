@@ -6,10 +6,8 @@ export const options = {
     series: countrydData,
     chart: {
         type: 'spline',
-        height: 500,
-        animation: {
-            duration: 1000,
-        },
+        height: window.innerHeight,
+        spacing: [100, 100, 150, 100],
 
         // For larger ticks, increase
         spacingBottom: 80,
@@ -34,7 +32,6 @@ export const options = {
         labels: {
             align: 'right',
         },
-
         // labels overlap border of svg
         opposite: true,
     },

@@ -81,15 +81,6 @@ function App() {
         setModalEvent(null);
     };
 
-    const setTickEventListeners = () => {
-        // Event listener for X Axis Ticks => Passing it in props didnt work
-        document.querySelectorAll('.tick-xAxis').forEach((tick: any) => {
-            tick.addEventListener('click', function () {
-                showEventModal(tick.dataset.year);
-            });
-        });
-    };
-
     // Set all options for the chart
     const [chartOptions] = useState({
         series: countrydData,
@@ -103,7 +94,16 @@ function App() {
             zoomType: 'xy',
             events: {
                 load: function (this: Chart) {
-                    setTickEventListeners();
+                    // Event listener for X Axis Ticks => Passing it in props didnt work
+                    document
+                        .querySelectorAll('.tick-xAxis')
+                        .forEach((tick: any) => {
+                            tick.addEventListener('click', function () {
+                                const year = tick.dataset.year;
+                                showEventModal(year);
+                            });
+                        });
+
                     var axis = this.xAxis[0];
                     var ticks = axis.ticks;
                     for (const [key, tick] of Object.entries(ticks)) {
@@ -113,7 +113,6 @@ function App() {
                 },
                 redraw: function (this: Chart) {
                     updateOverlayPostition(this);
-                    setTimeout(setTickEventListeners, 1000);
                 },
             },
         },
@@ -133,8 +132,8 @@ function App() {
 
         legend: {
             layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'top',
+            align: 'left',
+            verticalAlign: 'bottom',
         },
 
         plotOptions: {
@@ -199,9 +198,6 @@ function App() {
 
         const chart: Chart = chartRef.current!.chart;
 
-        // Store max values of axis
-        // saveExtremes(chart);
-
         if (zoomActive) {
             resetExtremes(chart);
         } else {
@@ -244,31 +240,31 @@ function App() {
     };
 
     return (
-        <div className="embed-js-graphics-container">
+        <main>
             {modalEvent ? (
                 <EventModal
                     event={modalEvent}
                     closeEventModal={closeEventModal}
                 />
             ) : null}
-            <SideBar onClickFilterHandler={onClickFilterHandler} filterActive={filterActive}/>
-            <div className="embed-js-graphics-wrapper">
-                <HighchartsReact
-                    highcharts={Highcharts}
-                    options={chartOptions}
-                    // dont know how to fix this
-                    ref={chartRef}
-                    key={'chart'}
-                />
-                <div
-                    className='toggle-zoom-overlay'
-                    onClick={(e) => onClickZoomHandler(e)}
-                    style={overlayPosition}
-                >
-                    Zoom
-                </div>
+            <HighchartsReact
+                highcharts={Highcharts}
+                options={chartOptions}
+                // dont know how to fix this
+                ref={chartRef}
+                key={'chart'}
+            />
+            <div
+                className='toggle-zoom-overlay'
+                onClick={(e) => onClickZoomHandler(e)}
+                style={overlayPosition}
+            >
+                Zoom
             </div>
-        </div>
+            <button onClick={(e) => onClickFilterHandler(e)}>
+                Die Kleinen
+            </button>
+        </main>
     );
 }
 
